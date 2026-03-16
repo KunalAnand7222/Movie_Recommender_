@@ -1,14 +1,17 @@
 # api="6182f9fab5aeff6bf2cb039e7f949108"
-import streamlit as st
-# from auth import login_page
-from recommender import recommend_movies
-from ui_components import movie_row
 import pickle
-
-st.set_page_config(layout="wide",page_title="MovieFlix")
+import pandas as pd
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.feature_extraction.text import CountVectorizer
 
 movies = pickle.load(open("movies.pkl","rb"))
-similarity = pickle.load(open("similarity.pkl","rb"))
+
+try:
+    similarity = pickle.load(open("similarity.pkl","rb"))
+except:
+    cv = CountVectorizer(max_features=5000,stop_words='english')
+    vectors = cv.fit_transform(movies['tags']).toarray()
+    similarity = cosine_similarity(vectors)
 
 st.sidebar.title("🔎 Search Movies")
 
