@@ -5,6 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
 movies = pickle.load(open("movies.pkl","rb"))
+st.write(movies.columns)
 
 try:
     similarity = pickle.load(open("similarity.pkl","rb"))
