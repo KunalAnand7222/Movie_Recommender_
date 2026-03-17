@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
+from ui_components import movie_row
 movies = pickle.load(open("movies.pkl", "rb"))
 if 'tags' in movies.columns:
     text_col = 'tags'
@@ -56,9 +57,4 @@ if st.sidebar.button("Recommend"):
                 st.markdown(f"**{movie['title']}**")
     else:
         st.warning("Movie not found")
-st.subheader("🔥 Trending Movies")
-trending = movies.sample(10)
-cols = st.columns(5)
-for i, movie in enumerate(trending):
-    with cols[i % 5]:
-        st.markdown(f"{movies['title']}")
+movie_row("🔥 Trending Movies", movies.sample(10).to_dict("records"))
