@@ -49,12 +49,9 @@ if st.sidebar.button("Recommend"):
     recs = recommend_movies(selected, movies, similarity)
 
     if recs:
-        st.subheader("Recommended Movies")
-        cols = st.columns(len(recs))
-
-        for i, movie in enumerate(recs):
-            with cols[i]:
-                st.markdown(f"**{movie['title']}**")
+        if st.sidebar.button("Recommend"):
+            recs = recommend_movies(selected, movies, similarity)
+            movie_row("🎯 Recommended Movies", recs)
     else:
         st.warning("Movie not found")
 movie_row("🔥 Trending Movies", movies.sample(10).to_dict("records"))
