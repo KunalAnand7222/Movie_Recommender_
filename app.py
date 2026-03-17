@@ -12,7 +12,7 @@ try:
     similarity = pickle.load(open("similarity.pkl","rb"))
 except:
     cv = CountVectorizer(max_features=5000,stop_words='english')
-    vectors = cv.fit_transform(movies['tags']).toarray()
+    vectors = cv.fit_transform(movies['tag']).toarray()
     similarity = cosine_similarity(vectors)
 
 st.sidebar.title("🔎 Search Movies")
