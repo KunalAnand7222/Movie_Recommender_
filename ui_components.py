@@ -1,70 +1,51 @@
 import streamlit as st
-from recommender import fetch_details
-
-st.markdown("""
-<style>
-
-body{
-background-color:#0b0f0b;
-}
-
-.movie-title{
-font-size:16px;
-font-weight:600;
-text-align:center;
-margin-top:8px;
-color:white;
-}
-
-.movie-rating{
-text-align:center;
-color:#22c55e;
-font-weight:600;
-margin-bottom:10px;
-}
-
-.movie-row-title{
-font-size:28px;
-font-weight:700;
-margin-top:30px;
-margin-bottom:10px;
-color:#22c55e;
-}
-
-</style>
-""", unsafe_allow_html=True)
-
 
 def movie_row(title, movies):
-    st.markdown(f"<div class='movie-row-title'>{title}</div>", unsafe_allow_html=True)
 
-    valid_movies = []
+    st.markdown(f"""
+        <h3 style='color:white;margin-top:30px;'>{title}</h3>
+    """, unsafe_allow_html=True)
+
+    # horizontal scroll container
+    st.markdown("""
+        <style>
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px;
+        }
+        .movie-card {
+            min-width: 180px;
+            transition: transform 0.3s;
+        }
+        .movie-card:hover {
+            transform: scale(1.08);
+        }
+        .movie-title {
+            color: white;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    container = "<div class='scroll-container'>"
 
     for movie in movies:
+
         poster = movie.get("poster")
-        rating = movie.get("rating")
-        
+
         if not poster:
-            poster, rating, overview = fetch_details(movie["id"])
+            poster = "https://via.placeholder.com/300x450?text=Movie"
 
-        if poster and str(poster) != "None" and "null" not in str(poster):
-            movie["poster"] = poster
-            movie["rating"] = rating if rating else "N/A"
-            valid_movies.append(movie)
+        container += f"""
+            <div class='movie-card'>
+                <img src="{poster}" width="180"/>
+                <div class='movie-title'>{movie.get("title","")}</div>
+            </div>
+        """
 
-        if len(valid_movies) == 5:
-            break
+    container += "</div>"
 
-    if valid_movies:
-        cols = st.columns(len(valid_movies))
-        for i, movie in enumerate(valid_movies):
-            with cols[i]:
-                st.image(movie["poster"], use_container_width=True)
-                st.markdown(
-                    f"<div class='movie-title'>{movie['title']}</div>",
-                    unsafe_allow_html=True
-                )
-                st.markdown(
-                    f"<div class='movie-rating'>⭐ {movie['rating']}</div>",
-                    unsafe_allow_html=True
-                )
+    st.markdown(container, unsafe_allow_html=True)
