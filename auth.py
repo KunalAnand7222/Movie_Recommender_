@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 from recommender import recommend_movies
 from ui_components import movie_row, movie_popup
+from ui_components import movie_row
 
 st.set_page_config(layout="wide",page_title="MovieFlix")
 
