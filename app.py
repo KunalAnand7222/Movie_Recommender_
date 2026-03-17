@@ -61,4 +61,4 @@ trending = movies.sample(10)
 cols = st.columns(5)
 for i, movie in enumerate(trending):
     with cols[i % 5]:
-        st.markdown(f"{movie['title']}")
+        st.markdown(f"{movies['title']}")
