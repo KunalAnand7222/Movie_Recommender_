@@ -1,18 +1,21 @@
 import streamlit as st
+import streamlit.components.v1 as components
 
 def movie_row(title, movies):
 
-    st.markdown(f"""
-        <h3 style='color:white;margin-top:30px;'>{title}</h3>
-    """, unsafe_allow_html=True)
+    st.markdown(f"<h3 style='color:white;margin-top:30px;'>{title}</h3>", unsafe_allow_html=True)
 
-    st.markdown("""
+    html = """
     <style>
+    body {
+        background-color: #0b0f19;
+    }
+
     .scroll-container {
         display: flex;
         overflow-x: auto;
         gap: 20px;
-        padding: 20px 10px;
+        padding: 15px;
         scroll-behavior: smooth;
     }
 
@@ -37,8 +40,8 @@ def movie_row(title, movies):
     }
 
     .movie-card img {
-        border-radius: 10px;
         width: 180px;
+        border-radius: 10px;
     }
 
     .movie-title {
@@ -48,14 +51,13 @@ def movie_row(title, movies):
         text-align: center;
     }
     </style>
-    """, unsafe_allow_html=True)
 
-    html = "<div class='scroll-container'>"
+    <div class="scroll-container">
+    """
 
     for movie in movies:
 
         poster = movie.get("poster")
-
         if not poster:
             poster = "https://via.placeholder.com/300x450?text=Movie"
 
@@ -70,4 +72,4 @@ def movie_row(title, movies):
 
     html += "</div>"
 
-    st.markdown(html, unsafe_allow_html=True)
+    components.html(html, height=350, scrolling=True)
